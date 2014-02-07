@@ -23,7 +23,7 @@
         <td><%= candidate.lastname %></td>
         <td><%= candidate.email %></td>
         <td><%= candidate.phone %></td>
-        <td><%= candidate.resume %></td>
+        <td><%= link_to candidate.resume,'/uploads/'+candidate.resume %></td>
         <td><%= candidate.stage %></td>
         <td><%= candidate.last_contact %></td>
         <td><%= link_to 'Show', candidate %></td>

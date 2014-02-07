@@ -24,8 +24,17 @@ class CandidatesController < ApplicationController
   # POST /candidates
   # POST /candidates.json
   def create
+    
     @candidate = Candidate.new(candidate_params)
-
+    
+    # let's save the uploaded file
+    uploaded_io = @candidate.resume
+    File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+      file.write(uploaded_io.read)
+    end
+    # and reset the resume to the filepath
+    @candidate.resume = uploaded_io.original_filename
+    
     respond_to do |format|
       if @candidate.save
         format.html { redirect_to @candidate, notice: 'Candidate was successfully created.' }
@@ -40,8 +49,19 @@ class CandidatesController < ApplicationController
   # PATCH/PUT /candidates/1
   # PATCH/PUT /candidates/1.json
   def update
+    # get the whitelisted params now, cause we're going to use it a couple times (and mutate it)
+    updateparams = candidate_params
+    
+        # let's save the uploaded file
+    uploaded_io = updateparams[:resume]
+    File.open(Rails.root.join('public', 'uploads', uploaded_io.original_filename), 'wb') do |file|
+      file.write(uploaded_io.read)
+    end
+    # and reset the resume to the filepath
+    updateparams[:resume] = uploaded_io.original_filename
+
     respond_to do |format|
-      if @candidate.update(candidate_params)
+      if @candidate.update(updateparams)
         format.html { redirect_to @candidate, notice: 'Candidate was successfully updated.' }
         format.json { head :no_content }
       else
@@ -65,10 +85,12 @@ class CandidatesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_candidate
       @candidate = Candidate.find(params[:id])
+      
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def candidate_params
       params.require(:candidate).permit(:firstname, :lastname, :email, :phone, :resume, :stage, :last_contact)
     end
+  
 end
