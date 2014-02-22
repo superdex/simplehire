@@ -10,6 +10,9 @@ gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass'
 
+# grab a nice calendar picker
+gem 'calendar_date_select'
+
 # we like enums (especially for the state of the candidate)
 gem 'enumify'
 
