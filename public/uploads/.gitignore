@@ -1,0 +1,5 @@
+# in this directory, we ignore everything (they're uploaded from the user)
+*
+
+# but let's keep .gitignore
+!.gitignore
